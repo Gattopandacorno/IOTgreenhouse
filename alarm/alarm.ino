@@ -40,7 +40,7 @@ void callback_buzzer(CoapPacket &packet, IPAddress ip, int port)
     bip = true;
     coap.sendResponse(ip, port, packet.messageid, "1");
   }
-  else if (message.equals("-1"))
+  else if (message.equals("-1")) //TODO: improve
   {
     WiFi.forceSleepBegin();
   }
@@ -72,7 +72,6 @@ void loop()
     if(digitalRead(TouchPin) == HIGH) 
       bip = false;
   }
-  
 
   coap.loop();  
 }

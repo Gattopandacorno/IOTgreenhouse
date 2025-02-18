@@ -3,7 +3,6 @@
 #include <WiFi.h>
 #include "WifiUtils.h"
 
-int MoisturePin = 33;
 int LightPin    = 32;
 int HumidityPin = 16;
 int Red = 25, Green = 26, Blue = 27;
@@ -57,22 +56,12 @@ void loop()
 {
   temp = dht.readTemperature() - 2.30;
 
-  Serial.println(analogRead(MoisturePin));
-
   if(temp >= 30.0 || temp <= 8.0 || dht.readHumidity() <= 10.0)
     coap.put(IPAddress(192, 168, 4, 2), 5683, "buzzer", "1");
 
   delay(1000);
   coap.loop();
 }
-
-
-/**
- * CAPACITIVE SOIL MOISTURE SENSOR
- * GND  -> GND
- * VCC  -> 3V3
- * AUOT -> SP
- */
 
 
 /**
