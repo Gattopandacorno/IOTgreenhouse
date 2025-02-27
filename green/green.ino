@@ -5,7 +5,7 @@
 
 int LightPin    = 32;
 int HumidityPin = 16;
-int Red = 25, Green = 26, Blue = 27;
+int Green = 25, Blue = 26, Red = 27;
 int temp;
 
 WiFiUDP udp;
@@ -44,9 +44,9 @@ void setup()
   pinMode(Green, OUTPUT);
   pinMode(Blue, OUTPUT);
   
-  analogWrite(Red, 220);
-  analogWrite(Green, 200);
-  analogWrite(Blue, 100);
+  analogWrite(Blue, 0);
+  analogWrite(Green, 0);
+  analogWrite(Red, 0);
 
   coap.response(callback_response);
   coap.start();
@@ -56,10 +56,15 @@ void loop()
 {
   temp = dht.readTemperature() - 2.30;
 
-  if(temp >= 30.0 || temp <= 8.0 || dht.readHumidity() <= 10.0)
-    coap.put(IPAddress(192, 168, 4, 2), 5683, "buzzer", "1");
+  Serial.println(analogRead(LightPin));
 
-  delay(1000);
+  if(temp >= 30.0 || temp <= 8.0 || dht.readHumidity() <= 10.0 || analogRead(LightPin) == 4095)
+  {
+    Serial.println("Call");
+    coap.put(IPAddress(192, 168, 4, 2), 5683, "buzzer", "1");
+  }
+
+  delay(2000);
   coap.loop();
 }
 
